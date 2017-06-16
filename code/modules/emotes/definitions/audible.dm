@@ -3,10 +3,17 @@
 	emote_message_3p = "USER burps."
 	message_type = AUDIBLE_MESSAGE
 	var/emote_sound
+	var/emote_sound_f
 
 /decl/emote/audible/do_extra(var/atom/user)
 	if(emote_sound)
-		playsound(user.loc, emote_sound, 50, 0)
+		if (user.gender == FEMALE && emote_sound_f)
+			playsound(user.loc, pick(emote_sound_f), 50, 0)
+		else
+			if (istype(emote_sound, /list))
+				playsound(user.loc, pick(emote_sound), 50, 0)
+			else
+				playsound(user.loc, emote_sound, 50, 0)
 
 /decl/emote/audible/deathgasp_alien
 	key = "deathgasp"
@@ -67,6 +74,8 @@
 /decl/emote/audible/sneeze
 	key = "sneeze"
 	emote_message_3p = "USER sneezes."
+	emote_sound = list('sound/misc/malesneeze01.ogg', 'sound/misc/malesneeze02.ogg', 'sound/misc/malesneeze03.ogg')
+	emote_sound_f = list('sound/misc/femsneeze01.ogg', 'sound/misc/femsneeze02.ogg')
 
 /decl/emote/audible/sniff
 	key = "sniff"
@@ -97,6 +106,8 @@
 	key = "cough"
 	emote_message_3p = "USER coughs!"
 	conscious = 0
+	emote_sound = list('sound/misc/cough1.ogg', 'sound/misc/cough2.ogg', 'sound/misc/cough3.ogg', 'sound/misc/cough4.ogg')
+	emote_sound_f = list('sound/misc/cough_f1.ogg', 'sound/misc/cough_f2.ogg', 'sound/misc/cough_f3.ogg')
 
 /decl/emote/audible/cry
 	key = "cry"
@@ -135,3 +146,5 @@
 /decl/emote/audible/scream
 	key = "scream"
 	emote_message_3p = "USER screams!"
+	emote_sound = list('sound/misc/scream_m1.ogg', 'sound/misc/scream_m2.ogg')
+	emote_sound_f = list('sound/misc/scream_f1.ogg', 'sound/misc/scream_f2.ogg', 'sound/misc/scream_f3.ogg')
