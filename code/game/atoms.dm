@@ -207,6 +207,11 @@ its easier to just keep the beam vertical.
 			f_name += "oil-stained [name][infix]."
 	if(!isobserver(user))
 		user.visible_message("<font size=1>[user.name] looks at [src].</font>")
+		
+		if(get_dist(user,src) > 5)//Don't get descriptions of things far away.
+			to_chat(user, "<span class='info'>It's too far away to see clearly.</span>")
+			return
+
 	to_chat(user, "\icon[src] That's [f_name] [suffix]")
 	to_chat(user, desc)
 
@@ -379,10 +384,7 @@ its easier to just keep the beam vertical.
 
 //Jumping
 /atom/proc/jump_act(atom/target, mob/living/carbon/human/user)
-	if(user.lying)//No jumping on the ground dummy.
-		return
-
-	if(isspace(user.loc))//Nothing to jump off of in space.
+	if(user.lying && isspace(user.loc))//No jumping on the ground dummy && No jumping in space
 		return
 
 	for(var/limbcheck in list(BP_L_LEG,BP_R_LEG))//But we need to see if we have legs.
