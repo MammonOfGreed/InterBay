@@ -207,7 +207,7 @@ its easier to just keep the beam vertical.
 			f_name += "oil-stained [name][infix]."
 	if(!isobserver(user))
 		user.visible_message("<font size=1>[user.name] looks at [src].</font>")
-		
+
 		if(get_dist(user,src) > 5)//Don't get descriptions of things far away.
 			to_chat(user, "<span class='info'>It's too far away to see clearly.</span>")
 			return
@@ -329,7 +329,9 @@ its easier to just keep the beam vertical.
 	for(var/m in mobs)
 		var/mob/M = m
 		if(M.see_invisible >= invisibility)
-			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
+			if(M.client)
+				if(!(src in M.client.hidden_mobs))
+					M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 		else if(blind_message)
 			M.show_message(blind_message, AUDIBLE_MESSAGE)
 
@@ -378,20 +380,20 @@ its easier to just keep the beam vertical.
 			var/obj/item/organ/affecting = user.get_organ(limbcheck)
 			if(!affecting)//Oh shit, we don't have have any legs, we can't kick.
 				return 0
-		
+
 		user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 		return 1 //We do have legs now though, so we can kick.
 
 //Jumping
 /atom/proc/jump_act(atom/target, mob/living/carbon/human/user)
-	if(user.lying && isspace(user.loc))//No jumping on the ground dummy && No jumping in space
+	if(user.lying || isspace(user.loc))//No jumping on the ground dummy && No jumping in space
 		return
 
 	for(var/limbcheck in list(BP_L_LEG,BP_R_LEG))//But we need to see if we have legs.
 		var/obj/item/organ/affecting = user.get_organ(limbcheck)
 		if(!affecting)//Oh shit, we don't have have any legs, we can't jump.
 			return
-	
+
 	//Nice, we can jump, let's do that then.
 	playsound(user, "sound/effects/jump_[user.gender == MALE ? "male" : "female"].ogg", 25)
 	user.visible_message("[user] jumps.")

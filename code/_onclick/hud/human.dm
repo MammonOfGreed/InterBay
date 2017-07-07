@@ -221,7 +221,15 @@
 		mymob.bodytemp.screen_loc = ui_temp
 		hud_elements |= mymob.bodytemp
 
-	if(hud_data.has_nutrition)
+	if(target.isSynthetic())
+		target.cells = new /obj/screen()
+		target.cells.icon = 'icons/mob/screen1_robot.dmi'
+		target.cells.icon_state = "charge-empty"
+		target.cells.name = "cell"
+		target.cells.screen_loc = ui_nutrition
+		hud_elements |= target.cells
+
+	else if(hud_data.has_nutrition)
 		mymob.nutrition_icon = new /obj/screen()
 		mymob.nutrition_icon.icon = ui_style
 		mymob.nutrition_icon.icon_state = "nutrition0"
@@ -249,6 +257,13 @@
 	mymob.jump_icon.name = "jump"
 	mymob.jump_icon.screen_loc = ui_kick
 	hud_elements |= mymob.jump_icon
+
+	mymob.fixeye = new /obj/screen()
+	mymob.fixeye.icon = ui_style
+	mymob.fixeye.icon_state = "fixeye"
+	mymob.fixeye.name = "fixeye"
+	mymob.fixeye.screen_loc = ui_fixeye
+	hud_elements |= mymob.fixeye
 
 	mymob.pain = new /obj/screen( null )
 	mymob.pain.icon = ui_style
